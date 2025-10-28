@@ -204,7 +204,7 @@ def multi_threaded_inference(handler, test_case, include_input_log, exclude_stat
 
 
 def generate_results(args, model_name, test_cases_total):
-    handler = build_handler(model_name, args.temperature, args.dtype)
+    handler = build_handler(model_name, args.temperature, dtype=args.dtype)
 
     if isinstance(handler, OSSHandler):
         handler: OSSHandler
