@@ -41,7 +41,7 @@ def get_args():
     parser.add_argument("--num-gpus", default=1, type=int)
     parser.add_argument("--backend", default="sglang", type=str, choices=["vllm", "sglang"])
     parser.add_argument("--gpu-memory-utilization", default=0.9, type=float)
-    parser.add_argument("--dtype", default="bfloat16", type=str, help="Data type for model weights (e.g., 'half', 'bfloat16', 'float16', 'float32').")
+    parser.add_argument("--dtype", default="half", type=str, help="Data type for model weights (e.g., 'half', 'bfloat16', 'float16', 'float32').")
     parser.add_argument("--result-dir", default=None, type=str)
     parser.add_argument("--run-ids", action="store_true", default=False)
     parser.add_argument("--allow-overwrite", "-o", action="store_true", default=False)
@@ -63,7 +63,7 @@ def get_args():
     return args
 
 
-def build_handler(model_name, temperature, dtype="bfloat16"):
+def build_handler(model_name, temperature, dtype="half"):
     config = MODEL_CONFIG_MAPPING[model_name]
     handler = config.model_handler(
         model_name=config.model_name,
