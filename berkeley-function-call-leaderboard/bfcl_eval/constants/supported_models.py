@@ -174,6 +174,7 @@ SUPPORTED_MODELS = [
     "qwen/qwq-32b-novita",
     "qwen3-4b-think-FC",
     "qwen3-4b-nothink-FC",
-    "HuggingFaceTB/SmolLM2-135M"
+    "HuggingFaceTB/SmolLM2-135M",
+    "HuggingFaceTB/SmolLM2-360M"
     
 ]

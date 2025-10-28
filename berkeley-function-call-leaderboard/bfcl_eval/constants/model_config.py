@@ -1137,6 +1137,18 @@ local_inference_model_map = {
     is_fc_model=False,  
     underscore_to_dot=False) ,
 
+    "HuggingFaceTB/SmolLM2-360M": ModelConfig(  
+    model_name="HuggingFaceTB/SmolLM2-360M",  
+    display_name="SmolLM2-135M (Prompt)",  
+    url="https://huggingface.co/HuggingFaceTB/SmolLM2-360M",  
+    org="HuggingFace",  
+    license="apache-2.0",  # Check actual license  
+    model_handler=SmolLm2Handler,  # e.g., SmolLM2  
+    input_price=None,  
+    output_price=None,  
+    is_fc_model=False,  
+    underscore_to_dot=False) ,
+
     "deepseek-ai/DeepSeek-R1": ModelConfig(
         model_name="deepseek-ai/DeepSeek-R1",
         display_name="DeepSeek-R1 (Prompt) (Local)",
