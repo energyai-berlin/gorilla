@@ -122,6 +122,7 @@ def generate(
     num_threads: Optional[int] = typer.Option(None, help="The number of threads to use."),
     gpu_memory_utilization: float = typer.Option(0.9, help="The GPU memory utilization."),
     backend: str = typer.Option("sglang", help="The backend to use for the model."),
+    dtype: str = typer.Option("bfloat16", help="Data type for model weights (e.g., 'half', 'bfloat16', 'float16', 'float32')."),
     skip_server_setup: bool = typer.Option(
         False,
         "--skip-server-setup",
@@ -163,6 +164,7 @@ def generate(
         num_threads=num_threads,
         gpu_memory_utilization=gpu_memory_utilization,
         backend=backend,
+        dtype=dtype,
         skip_server_setup=skip_server_setup,
         local_model_path=local_model_path,
         result_dir=result_dir,
