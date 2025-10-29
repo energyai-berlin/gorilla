@@ -1139,7 +1139,7 @@ local_inference_model_map = {
 
     "HuggingFaceTB/SmolLM2-360M": ModelConfig(  
     model_name="HuggingFaceTB/SmolLM2-360M",  
-    display_name="SmolLM2-135M (Prompt)",  
+    display_name="SmolLM2-360M (Prompt)",  
     url="https://huggingface.co/HuggingFaceTB/SmolLM2-360M",  
     org="HuggingFace",  
     license="apache-2.0",  # Check actual license  
