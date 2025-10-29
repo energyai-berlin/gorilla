@@ -141,6 +141,10 @@ class OSSHandler(BaseHandler, EnforceOverrides):
         try:
             if not skip_server_setup:
                 if backend == "vllm":
+                    # Set up environment to allow overriding max model length
+                    vllm_env = os.environ.copy()
+                    vllm_env["VLLM_ALLOW_LONG_MAX_MODEL_LEN"] = "1"
+
                     process = subprocess.Popen(
                         [
                             "vllm",
@@ -157,11 +161,12 @@ class OSSHandler(BaseHandler, EnforceOverrides):
                             "--trust-remote-code",
                             "--max-model-len",
                             str(self.max_context_length)
-                            
+
                         ],
                         stdout=subprocess.PIPE,  # Capture stdout
                         stderr=subprocess.PIPE,  # Capture stderr
                         text=True,  # To get the output as text instead of bytes
+                        env=vllm_env,
                     )
                 elif backend == "sglang":
 
