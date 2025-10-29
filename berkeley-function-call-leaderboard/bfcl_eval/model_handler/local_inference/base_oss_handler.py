@@ -155,6 +155,8 @@ class OSSHandler(BaseHandler, EnforceOverrides):
                             "--gpu-memory-utilization",
                             str(gpu_memory_utilization),
                             "--trust-remote-code",
+                            "--max-model-len",
+                            str(self.max_context_length)
                             
                         ],
                         stdout=subprocess.PIPE,  # Capture stdout
