@@ -242,6 +242,7 @@ def generate_results(args, model_name, test_cases_total):
                 num_gpus=args.num_gpus,
                 gpu_memory_utilization=args.gpu_memory_utilization,
                 backend=args.backend,
+                model_max_len = args.model_max_len,
                 skip_server_setup=args.skip_server_setup,
                 local_model_path=args.local_model_path,
             )

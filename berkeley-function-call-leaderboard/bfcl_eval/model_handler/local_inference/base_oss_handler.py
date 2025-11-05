@@ -76,6 +76,7 @@ class OSSHandler(BaseHandler, EnforceOverrides):
         num_gpus: int,
         gpu_memory_utilization: float,
         backend: str,
+        model_max_len :str ,
         skip_server_setup: bool,
         local_model_path: Optional[str],
     ):
@@ -117,9 +118,12 @@ class OSSHandler(BaseHandler, EnforceOverrides):
         config = AutoConfig.from_pretrained(**load_kwargs)
 
         # Check if model_max_len was explicitly provided as an override
-        if self.model_max_len is not None:
-            self.max_context_length = self.model_max_len
+        if model_max_len is not None:
+            self.max_context_length = model_max_len
             print(f"Max context length (from model_max_len parameter): {self.max_context_length}")
+        elif self.model_max_len is not None:
+            self.max_context_length = self.model_max_len
+
         elif hasattr(config, "max_position_embeddings"):
             self.max_context_length = config.max_position_embeddings
             print(f"Max context length (from config): {self.max_context_length}")
@@ -160,7 +164,7 @@ class OSSHandler(BaseHandler, EnforceOverrides):
                             str(gpu_memory_utilization),
                             "--trust-remote-code",
                             "--max-model-len",
-                            str(self.max_context_length)
+                            str(self.max_context_length),
 
                         ],
                         stdout=subprocess.PIPE,  # Capture stdout
@@ -186,6 +190,8 @@ class OSSHandler(BaseHandler, EnforceOverrides):
                             "--mem-fraction-static",
                             str(gpu_memory_utilization),
                             "--trust-remote-code",
+                            "--max-model-len",
+                            str(self.max_context_length)
                         ],
                         stdout=subprocess.PIPE,  # Capture stdout
                         stderr=subprocess.PIPE,  # Capture stderr

@@ -63,6 +63,7 @@ from bfcl_eval.model_handler.local_inference.salesforce_qwen import (
     SalesforceQwenHandler,
 )
 from bfcl_eval.model_handler.local_inference.smollm2 import SmolLm2Handler
+from bfcl_eval.model_handler.local_inference.lfm2 import LFM2Handler
 from bfcl_eval.model_handler.local_inference.think_agent import ThinkAgentHandler
 
 # -----------------------------------------------------------------------------
@@ -1125,13 +1126,25 @@ api_inference_model_map = {
 
 # Inference through local hosting
 local_inference_model_map = {
-    "HuggingFaceTB/SmolLM2-135M": ModelConfig(  
-    model_name="HuggingFaceTB/SmolLM2-135M",  
-    display_name="SmolLM2-135M (Prompt)",  
-    url="https://huggingface.co/HuggingFaceTB/SmolLM2-135M",  
+    "LiquidAI/LFM2-1.2B": ModelConfig(  
+    model_name="LiquidAI/LFM2-1.2B",  
+    display_name="LiquidAI/LFM2-1.2B (Prompt)",  
+    url="https://huggingface.co/LiquidAI/LFM2-1.2B",  
     org="HuggingFace",  
     license="apache-2.0",  # Check actual license  
-    model_handler=SmolLm2Handler,  # e.g., SmolLM2  
+    model_handler=LFM2Handler,  # e.g., SmolLM2  
+    input_price=None,  
+    output_price=None,  
+    is_fc_model=False,  
+    underscore_to_dot=False) ,
+
+    "LiquidAI/LFM2-350M": ModelConfig(  
+    model_name="LiquidAI/LFM2-350M",  
+    display_name="LiquidAI/LFM2-350M (Prompt)",  
+    url="https://huggingface.co/LiquidAI/LFM2-350M/tree/main",  
+    org="HuggingFace",  
+    license="apache-2.0",  # Check actual license  
+    model_handler=LFM2Handler,  # e.g., SmolLM2  
     input_price=None,  
     output_price=None,  
     is_fc_model=False,  

@@ -175,6 +175,9 @@ SUPPORTED_MODELS = [
     "qwen3-4b-think-FC",
     "qwen3-4b-nothink-FC",
     "HuggingFaceTB/SmolLM2-135M",
-    "HuggingFaceTB/SmolLM2-360M"
+    "HuggingFaceTB/SmolLM2-360M",
+    "LiquidAI/LFM2-350M",
+    "LiquidAI/LFM2-1.2B"
+
     
 ]
