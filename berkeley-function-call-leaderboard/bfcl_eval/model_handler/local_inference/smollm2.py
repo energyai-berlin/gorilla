@@ -12,8 +12,8 @@ class SmolLm2Handler(OSSHandler):
         registry_name,
         is_fc_model,
         dtype="bfloat16",
-        model_max_len = 16384
-        **kwargs,
+        model_max_len = 16384,
+        **kwargs
     ) -> None:
         super().__init__(model_name, temperature, registry_name, is_fc_model, dtype=dtype, model_max_len=model_max_len, **kwargs)
     @override
