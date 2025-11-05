@@ -1141,7 +1141,7 @@ local_inference_model_map = {
     "LiquidAI/LFM2-350M": ModelConfig(  
     model_name="LiquidAI/LFM2-350M",  
     display_name="LiquidAI/LFM2-350M (Prompt)",  
-    url="https://huggingface.co/LiquidAI/LFM2-350M/tree/main",  
+    url="https://huggingface.co/LiquidAI/LFM2-350M",  
     org="HuggingFace",  
     license="apache-2.0",  # Check actual license  
     model_handler=LFM2Handler,  # e.g., SmolLM2  
