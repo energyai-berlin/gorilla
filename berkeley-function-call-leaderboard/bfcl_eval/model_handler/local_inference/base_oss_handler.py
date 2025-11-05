@@ -189,9 +189,7 @@ class OSSHandler(BaseHandler, EnforceOverrides):
                             str(num_gpus),
                             "--mem-fraction-static",
                             str(gpu_memory_utilization),
-                            "--trust-remote-code",
-                            "--max-model-len",
-                            str(self.max_context_length)
+                            "--trust-remote-code"
                         ],
                         stdout=subprocess.PIPE,  # Capture stdout
                         stderr=subprocess.PIPE,  # Capture stderr
