@@ -88,7 +88,7 @@ class LFM2Handler(OSSHandler):
     def decode_ast(self, result, language, has_tool_call_tag):  
         # Extract tool calls from LFM2's format  
         if "<|tool_call_start|>" not in result:  
-            raise ValueError(f"No <tool_call> found in the model's response: {result}") 
+            return []  
         
         tool_call_str = result.split("<|tool_call_start|>")[1].split("<|tool_call_end|>")[0].strip()  
         
