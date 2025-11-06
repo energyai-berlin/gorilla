@@ -26,35 +26,38 @@ class LFM2Handler(OSSHandler):
         # Skip BFCL's default - LFM2 needs its own format  
         return {"message": [], "function": functions}
     
-    @override  
-    def _format_prompt(self, messages, function):  
-        formatted_prompt = "<|startoftext|>"  
+    @override    
+    def _format_prompt(self, messages, function):    
+        formatted_prompt = "<|startoftext|>"    
         
-        # Add system message with LFM2's tool list format  
+        # Add system message with comprehensive instructions  
         formatted_prompt += "<|im_start|>system\n"  
-        if function and len(function) > 0:  
-            tool_list = json.dumps(function)  
-            formatted_prompt += f"List of tools: <|tool_list_start|>{tool_list}<|tool_list_end|>"  
-        formatted_prompt += "<|im_end|>\n"  
+        formatted_prompt += "You are a helpful assistant that can use tools.\n"  
+        formatted_prompt += "When you need to use a tool, output it in this exact format:\n"  
+        formatted_prompt += "<|tool_call_start|>[function_name(param1=\"value1\", param2=\"value2\")]<|tool_call_end|>\n"  
+        formatted_prompt += "If no tool is needed, respond directly in plain text.\n\n"  
         
-        # Process remaining messages  
-        for message in messages:  
-            role = message["role"]  
-            content = message["content"]  
+        if function and len(function) > 0:    
+            tool_list = json.dumps(function)    
+            formatted_prompt += f"List of tools: <|tool_list_start|>{tool_list}<|tool_list_end|>\n"  
+        
+        formatted_prompt += "<|im_end|>\n"    
+        
+        # Process remaining messages    
+        for message in messages:    
+            role = message["role"]    
+            content = message["content"]    
             
-            # Skip system messages (already handled)  
-            if role == "system":  
-                continue  
+            if role == "system":    
+                continue    
                 
-            # Handle tool responses with special tags  
-            if role == "tool":  
-                formatted_prompt += f"<|im_start|>tool\n<|tool_response_start|>{content}<|tool_response_end|><|im_end|>\n"  
-            else:  
-                formatted_prompt += f"<|im_start|>{role}\n{content}<|im_end|>\n"  
+            if role == "tool":    
+                formatted_prompt += f"<|im_start|>tool\n<|tool_response_start|>{content}<|tool_response_end|><|im_end|>\n"    
+            else:    
+                formatted_prompt += f"<|im_start|>{role}\n{content}<|im_end|>\n"    
         
-        formatted_prompt += "<|im_start|>assistant\n"  
+        formatted_prompt += "<|im_start|>assistant\n"    
         return formatted_prompt
-    
 
 
     
