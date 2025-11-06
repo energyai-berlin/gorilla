@@ -81,4 +81,38 @@ class LFM2Handler(OSSHandler):
             })  
         return inference_data
     
+    @override  
+    def decode_ast(self, result, language, has_tool_call_tag):  
+        # Extract tool calls from LFM2's format  
+        if "<|tool_call_start|>" not in result:  
+            return result  # No tool calls, return as-is  
+        
+        tool_call_str = result.split("<|tool_call_start|>")[1].split("<|tool_call_end|>")[0].strip()  
+        
+        # Parse Python-style function calls: [func_name(param="value")]  
+        # Remove outer brackets if present  
+        tool_call_str = tool_call_str.strip("[]")  
+        
+        # Use ast.parse to safely parse the Python function call  
+        try:  
+            parsed = ast.parse(tool_call_str, mode='eval')  
+            decoded_output = []  
+            
+            # Handle single function call  
+            if isinstance(parsed.body, ast.Call):  
+                from bfcl_eval.model_handler.utils import resolve_ast_call  
+                decoded_output.append(resolve_ast_call(parsed.body))  
+            # Handle multiple function calls (list) - ADD TYPE CHECK HERE  
+            elif isinstance(parsed.body, ast.List):  
+                for elem in parsed.body.elts:  
+                    if isinstance(elem, ast.Call):  
+                        from bfcl_eval.model_handler.utils import resolve_ast_call  
+                        decoded_output.append(resolve_ast_call(elem))  
+            else:  
+                raise ValueError(f"Unexpected AST node type: {type(parsed.body)}")  
+            
+            return decoded_output  
+        except SyntaxError as e:  
+            raise ValueError(f"Failed to parse tool call: {tool_call_str}. Error: {str(e)}")
+    
 
