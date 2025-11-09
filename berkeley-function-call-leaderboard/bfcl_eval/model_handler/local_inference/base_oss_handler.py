@@ -325,7 +325,7 @@ class OSSHandler(BaseHandler, EnforceOverrides):
             extra_body["skip_special_tokens"] = self.skip_special_tokens
 
         start_time = time.time()
-        print(f"formatted_prompt " {formatted_prompt}")
+        print(f"formatted_prompt  {formatted_prompt}")
         if len(extra_body) > 0:
             api_response = self.client.completions.create(
                 model=self.model_path_or_id,
