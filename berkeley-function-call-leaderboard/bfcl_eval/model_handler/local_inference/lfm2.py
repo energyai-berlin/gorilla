@@ -56,8 +56,68 @@ class LFM2Handler(OSSHandler):
             else:    
                 formatted_prompt += f"<|im_start|>{role}\n{content}<|im_end|>\n"    
         
-        formatted_prompt += "<|im_start|>assistant\n"    
+        formatted_prompt += "<|im_start|>assistant\n"
+        print(f"Text that should provide to llm : {formatted_prompt}")
         return formatted_prompt
 
 
     
+    @override  
+    def decode_execute(self, result, has_tool_call_tag):
+        print(f"llm response : {result}")
+        # Similar extraction logic  
+        if "<|tool_call_start|>" not in result:  
+            return []  
+        
+        tool_call_str = result.split("<|tool_call_start|>")[1].split("<|tool_call_end|>")[0].strip()  
+        tool_call_str = tool_call_str.strip("[]")  
+        
+        # Return as executable string  
+        return [tool_call_str]
+    
+    @override  
+    def _add_execution_results_prompting(  
+        self, inference_data: dict, execution_results: list[str], model_response_data: dict  
+    ) -> dict:  
+        for execution_result in execution_results:  
+            inference_data["message"].append({  
+                "role": "tool",  
+                "content": f"<|tool_response_start|>{execution_result}<|tool_response_end|>"  
+            })  
+        return inference_data
+    
+    @override  
+    def decode_ast(self, result, language, has_tool_call_tag):  
+        # Extract tool calls from LFM2's format  
+        if "<|tool_call_start|>" not in result:  
+            return []  
+        
+        tool_call_str = result.split("<|tool_call_start|>")[1].split("<|tool_call_end|>")[0].strip()  
+        
+        # Parse Python-style function calls: [func_name(param="value")]  
+        # Remove outer brackets if present  
+        tool_call_str = tool_call_str.strip("[]")  
+        
+        # Use ast.parse to safely parse the Python function call  
+        try:  
+            parsed = ast.parse(tool_call_str, mode='eval')  
+            decoded_output = []  
+            
+            # Handle single function call  
+            if isinstance(parsed.body, ast.Call):  
+                from bfcl_eval.model_handler.utils import resolve_ast_call  
+                decoded_output.append(resolve_ast_call(parsed.body))  
+            # Handle multiple function calls (list) - ADD TYPE CHECK HERE  
+            elif isinstance(parsed.body, ast.List):  
+                for elem in parsed.body.elts:  
+                    if isinstance(elem, ast.Call):  
+                        from bfcl_eval.model_handler.utils import resolve_ast_call  
+                        decoded_output.append(resolve_ast_call(elem))  
+            else:  
+                raise ValueError(f"Unexpected AST node type: {type(parsed.body)}")  
+            
+            return decoded_output  
+        except SyntaxError as e:  
+            raise ValueError(f"Failed to parse tool call: {tool_call_str}. Error: {str(e)}")
+    
+
