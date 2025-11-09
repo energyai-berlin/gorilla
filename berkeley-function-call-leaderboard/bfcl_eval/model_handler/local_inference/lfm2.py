@@ -57,14 +57,12 @@ class LFM2Handler(OSSHandler):
                 formatted_prompt += f"<|im_start|>{role}\n{content}<|im_end|>\n"    
         
         formatted_prompt += "<|im_start|>assistant\n"
-        print(f"Text that should provide to llm : {formatted_prompt}")
         return formatted_prompt
 
 
     
     @override  
     def decode_execute(self, result, has_tool_call_tag):
-        print(f"llm response : {result}")
         # Similar extraction logic  
         if "<|tool_call_start|>" not in result:  
             return []  

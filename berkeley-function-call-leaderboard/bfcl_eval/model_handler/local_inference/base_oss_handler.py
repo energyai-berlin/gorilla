@@ -325,6 +325,7 @@ class OSSHandler(BaseHandler, EnforceOverrides):
             extra_body["skip_special_tokens"] = self.skip_special_tokens
 
         start_time = time.time()
+        print(f"formatted_prompt " {formatted_prompt}")
         if len(extra_body) > 0:
             api_response = self.client.completions.create(
                 model=self.model_path_or_id,
@@ -334,7 +335,6 @@ class OSSHandler(BaseHandler, EnforceOverrides):
                 extra_body=extra_body,
                 timeout=72000,  # Avoid timeout errors
             )
-            print(f"api_repsonse : {api_response}")
         else:
             api_response = self.client.completions.create(
                 model=self.model_path_or_id,
@@ -343,7 +343,7 @@ class OSSHandler(BaseHandler, EnforceOverrides):
                 max_tokens=leftover_tokens_count,
                 timeout=72000,  # Avoid timeout errors
             )
-            print(f"api_repsonse : {api_response}")
+        print(f"api_repsonse : {api_response}")
         end_time = time.time()
 
         return api_response, end_time - start_time
